@@ -1,0 +1,47 @@
+<form [formGroup]="dynamicForm">
+  <div *ngFor="let i of inputs">
+    <div [ngSwitch]="i.controlType">
+      <div *ngSwitchCase="'textbox'">
+        <ion-label position="stacked" color="primary">{{i.label}}</ion-label>
+        <ion-input
+                [formControlName]="i.key"
+                [placeholder]="i.placeholder"
+                [type]="i.type || 'text'"
+                [max]="i?.maxValue || null"
+                [min]="i?.minValue || null"
+        ></ion-input>
+          <div *ngIf="getFormControl(i.key).invalid && !getFormControl(i.key).pristine">
+              <div class="error-message"
+                   *ngIf="getFormControl(i.key).errors['required']">Éste campo es requerido</div>
+
+              <div class="error-message"
+                   *ngIf="getFormControl(i.key).errors['max']">El valor máximo a ingresar es {{ i.isCurrency ? (i.maxValue | copCurrency) : i.maxValue }}</div>
+
+              <div class="error-message"
+                   *ngIf="getFormControl(i.key).errors['min']">El valor a ingresar deber mayor a {{i.minValue}}</div>
+          </div>
+
+      </div>
+
+      <div *ngSwitchCase="'datepicker'">
+        <ion-item>
+          <ion-label position="stacked" color="primary">{{i.label}}</ion-label>
+          <ion-datetime
+                  cancelText="Cancelar"
+                  doneText="Aceptar"
+                  [formControlName]="i.key"
+                  [min]="i.minDate || null"
+                  [max]="i.maxDate || null"
+                  display-format="MMM DD, YYYY"></ion-datetime>
+        </ion-item>
+      </div>
+    </div>
+  </div>
+
+  <ion-button
+          (click)="onSubmit()"
+          [disabled]="!dynamicForm.valid"
+          type="button"
+          color="primary"
+          expand="block">{{btnLabel}}</ion-button>
+</form>

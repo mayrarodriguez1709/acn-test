@@ -1,0 +1,13 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Solicitud y Aprobación de Crédito
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <dynamic-form [inputs]="creditApplicationInputs"
+                [btnLabel]="'Solicitar Crédito'"
+                (submit)="onSubmit($event)"></dynamic-form>
+</ion-content>
